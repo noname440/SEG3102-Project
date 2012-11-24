@@ -1,0 +1,10 @@
+fields
+
+userID
+password
+firstName
+lastName
+email
+type
+courses
+studyProgram
