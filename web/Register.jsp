@@ -21,7 +21,18 @@
             </dd>
         <% String type = request.getParameter("type"); %>  
         <% if((type!=null)&&(type.trim().equals("student"))) { %>  
-            <jsp:include page="RegisterStudent.jsp" />  
+            <dt>Study Program</dt><dd><select name="studyProgram">
+            <option value="arts">Arts</option>
+            <option value="science">Science</option>
+            <option value="engineering">Engineering</option>
+            </select></dd>
+            
+            <dt>Courses</dt><dd><select multiple="multiple" name="courses">
+            <option value="seg3102">SEG 3102</option>
+            <option value="seg4910">SEG 4910 </option>
+            <option value="csi3105">CSI 3105 </option>
+            </select></dd>
+            
         <% } %>  
   
         <dt></dt><dd><input type="submit" value="Create account" name="submit" /></dd>
