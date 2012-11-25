@@ -26,11 +26,11 @@ import javax.servlet.http.HttpSession;
  *
  * @author Michael
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login", "/"})
+@WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
     
-    //EntityManagerFactory emf = Persistence.createEntityManagerFactory("OPSPU");
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("OPSPU");
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -87,7 +87,6 @@ public class Login extends HttpServlet {
 
             //Form information is valid
             // Check the database for valid login
-            /*
             EntityManager em = emf.createEntityManager();
             Query query = em.createQuery("SELECT s FROM User s WHERE s.userID = :userID AND s.password = :password");
             
@@ -96,7 +95,6 @@ public class Login extends HttpServlet {
             List<User> queryResults = (List<User>)query.getResultList();
 
             em.close();
-           
             
             if(queryResults.size() <= 0) {
                 errors.add("Invalid username or password. Please try again.");
@@ -114,7 +112,6 @@ public class Login extends HttpServlet {
                 request.setAttribute("errors", errors);
                 request.getRequestDispatcher("InstructorPage.jsp").forward(request, response);
             }
-              */
           }
     }
 

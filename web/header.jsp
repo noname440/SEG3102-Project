@@ -3,7 +3,8 @@
     <head>
         <title>Team Management System</title>        
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link rel="stylesheet" type="text/css" href="../style.css" />
+        <link rel="stylesheet" type="text/css" href="styles/style.css" media="screen" />
+        <script type="text/javascript" src="js/jquery-1.4.4.min.js"></script>
     </head>
     <body>
         <div id="wrap">
@@ -14,7 +15,7 @@
                     <h2>by the AntiPatterns</h2>
                 </div>
                 <div class="topmenu">
-                    <a href="Home.jsp">Home</a> ·
+                    <a href="/">Home</a> ·
                     <% if(session.getAttribute("user") == null) { %><a href="/Login">Login</a><% } %>
                     <% if(session.getAttribute("user") != null) { %><a href="/Logout">Logout</a><% } %>
                 </div>

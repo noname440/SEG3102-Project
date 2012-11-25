@@ -1,3 +1,10 @@
+/*
+Don't forget to link every image by ../images/ActualImage.jpg because
+this css file is actually in styles/style.css and not /style.css so
+we must go back one directory for every image listed here.
+*/
+
+/* Browser compatibility.. */
 * {
     padding: 0;
     margin: 0;

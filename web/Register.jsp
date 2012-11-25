@@ -3,7 +3,7 @@
 <div class="middle-full">
     <h2>Create Account</h2>
     <%@include file="messages.jsp" %>
-    <form>
+    <form id="registerForm" >
         <dl>
         <dt>User ID</dt><dd><input type="text" value="" name="username" /></dd>
         <dt>Password</dt><dd><input type="password" value="" name="password" /></dd>
@@ -11,13 +11,13 @@
         <dt>Last name</dt><dd><input type="text" value="" name="lastName" /></dd>
         <dt>Email</dt><dd><input type="text" value="" name="email" /></dd>
         <dt>Account type</dt> <dd>
-            <INPUT TYPE="radio" NAME="type" VALUE="student" >
+            <INPUT id="student" TYPE="radio" NAME="type" VALUE="student">
              Student
-            <INPUT TYPE="radio" NAME="type" VALUE="instructor">
+            <INPUT id="instructor" TYPE="radio" NAME="type" VALUE="instructor">
              Instructor
             </dd>
-        <% String type = request.getParameter("type"); %>  
-        <% if((type!=null)&&(type.trim().equals("student"))) { %>  
+               
+        <div id="studentPanel" style="display:none">    
             <dt>Study Program</dt><dd><select name="studyProgram">
             <option value="arts">Arts</option>
             <option value="science">Science</option>
@@ -30,11 +30,21 @@
             <option value="csi3105">CSI 3105 </option>
             </select></dd>
             
-        <% } %>  
+        </div>   
+        <script>
+            $('#registerForm').change(function() {
+                if ($('#student').attr('checked')) {
+                    $('#studentPanel').show('slow');
+                } else {
+                    $('#studentPanel').hide('slow');
+                }
+            });
+        </script>
+
   
-        <dt></dt><dd><input type="submit" value="Create account" name="submit" /></dd>
+        <dt></dt><dd><input type="submit" value="Create Account" name="submit" /></dd>
         </dl>
     </form>
-    <p><a href="?s=login">Already a member?</a></p>
+    <p><a href="/login">Already a member?</a></p>
 </div>
 <%@include file="footer.jsp" %>
