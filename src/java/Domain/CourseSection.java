@@ -39,7 +39,7 @@ public class CourseSection implements Serializable {
     //@JoinColumn(name="student_fk")
     List<Team> teamsPartOfCourse;
              
-     public List<Team> getTeamspartOfCourse(){
+     public List<Team> getTeamsPartOfCourse(){
          return teamsPartOfCourse;
          
      }
