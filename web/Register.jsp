@@ -5,7 +5,6 @@
     <%@include file="messages.jsp" %>
     <form>
         <dl>
-            <input type="hidden" name="s" value="createaccount" />
         <dt>User ID</dt><dd><input type="text" value="" name="username" /></dd>
         <dt>Password</dt><dd><input type="password" value="" name="password" /></dd>
         <dt>Given name</dt><dd><input type="text" value="" name="firstName" /></dd>

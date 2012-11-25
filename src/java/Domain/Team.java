@@ -77,7 +77,7 @@ public class Team implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
