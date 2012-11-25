@@ -13,10 +13,8 @@
         <dt>Account type</dt> <dd>
             <INPUT TYPE="radio" NAME="type" VALUE="student" >
              Student
-            <BR>
             <INPUT TYPE="radio" NAME="type" VALUE="instructor">
              Instructor
-            <BR>
             </dd>
         <% String type = request.getParameter("type"); %>  
         <% if((type!=null)&&(type.trim().equals("student"))) { %>  
