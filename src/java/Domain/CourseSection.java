@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
@@ -23,40 +24,45 @@ public class CourseSection implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long courseID;
     private String semester;
-    private char section;
+    private String section;
     private String courseName;
-    private String decription;
+    private String description;
     private int maxStudents;
     private int minStudents;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date startDate;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date endDate;
+    //@Temporal(javax.persistence.TemporalType.DATE)
+    private String startDate;
+    //@Temporal(javax.persistence.TemporalType.DATE)
+    private String endDate;
     
-     @OneToMany
-    //@JoinColumn(name="student_fk")
-    List<Team> teamsPartOfCourse;
-             
-     public List<Team> getTeamsPartOfCourse(){
-         return teamsPartOfCourse;
-         
-     }
-     
-     
-     public Long getId() {
-        return id;
+    @OneToMany
+            //@JoinColumn(name="student_fk")
+            List<Team> teamsPartOfCourse;
+    
+    @ManyToMany (targetEntity = Student.class)
+            List<Student> enrolledStudents;
+    
+    public List<Team> getTeamspartOfCourse(){
+        return teamsPartOfCourse;
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    
+    public void addStudent(Student s) {
+        enrolledStudents.add(s);
+    }
+    
+    public Long getCourseID() {
+        return courseID;
+    }
+    
+    public void setCourseID(Long id) {
+        this.courseID = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (courseID != null ? courseID.hashCode() : 0);
         return hash;
     }
 
@@ -68,11 +74,11 @@ public class CourseSection implements Serializable {
         this.semester = semester;
     }
 
-    public char getSection() {
+    public String getSection() {
         return section;
     }
 
-    public void setSection(char section) {
+    public void setSection(String section) {
         this.section = section;
     }
 
@@ -84,12 +90,12 @@ public class CourseSection implements Serializable {
         this.courseName = courseName;
     }
 
-    public String getDecription() {
-        return decription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDecription(String decription) {
-        this.decription = decription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getMaxStudents() {
@@ -108,19 +114,19 @@ public class CourseSection implements Serializable {
         this.minStudents = minStudents;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     
@@ -132,7 +138,7 @@ public class CourseSection implements Serializable {
             return false;
         }
         CourseSection other = (CourseSection) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.courseID == null && other.courseID != null) || (this.courseID != null && !this.courseID.equals(other.courseID))) {
             return false;
         }
         return true;
@@ -140,7 +146,7 @@ public class CourseSection implements Serializable {
 
     @Override
     public String toString() {
-        return "Domain.CourseSection[ id=" + id + " ]";
+        return "Domain.CourseSection[ id=" + courseID + " ]";
     }
 
     

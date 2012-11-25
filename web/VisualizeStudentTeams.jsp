@@ -16,6 +16,21 @@
     <h2> Course: <% course.getCourseName(); %> </h2>
     <% List<Team> teams = course.getTeamsPartOfCourse();%>
     <% for (Team team : teams) {%>
+    <dl>
+        <dt>ID: </dt><dd><% team.getId(); %></dd>
+        <dt>Team Name: </dt><dd><% team.getTeamName(); %></dd>
+        <dt>Date of Creation: </dt><dd><% team.getCreationDate(); %></dd>
+        <dt>Status: </dt><dd><% team.getStatus(); %></dd>     
+    </dl>
+    <h3>Liason Info: </h3>
+    <dl>
+        <dt>Student Number: </dt><dd><% team.getId(); %></dd>
+        <dt>Name: </dt><dd><% team.getTeamName(); %></dd>
+        <dt>Study Program: </dt><dd><% team.getCreationDate(); %></dd>
+        <dt>Status: </dt><dd><% team.getStatus(); %></dd>     
+    </dl>
+    
+        
     
     
 </div>

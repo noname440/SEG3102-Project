@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
@@ -31,18 +32,30 @@ public class Team implements Serializable {
     private int minExempt;
     private int maxExempt;
     
-    @ManyToOne  
-    CourseSection courseSectionForTeam;
-             
-     public CourseSection getTeamspartOfCourse(){
-         return courseSectionForTeam;
-         
-     }
+    @ManyToOne
+            CourseSection courseSection;
+    
+    @ManyToMany(
+            mappedBy = "teamsAppliedTo",
+            targetEntity=Student.class
+            
+            )
+            List<Student> applicants;
+    
+    @ManyToMany(
+            mappedBy = "teamsMemberOf",
+            targetEntity=Student.class
+            
+            )
+            List<Student> members;
+    
+    @ManyToOne
+            Student liaison;
     
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -64,7 +77,7 @@ public class Team implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
@@ -86,6 +99,38 @@ public class Team implements Serializable {
 
     public void setMaxExempt(int maxExempt) {
         this.maxExempt = maxExempt;
+    }
+    
+    public CourseSection getCourseSection() {
+        return courseSection;
+    }
+    
+    public void setCourseSection(CourseSection course) {
+        courseSection = course;
+    }
+    
+    public List<Student> getApplicants() {
+        return applicants;
+    }
+    
+    public void addApplicant(Student s) {
+        applicants.add(s);
+    }
+    
+    public List<Student> getMembers() {
+        return members;
+    }
+    
+    public void addMember(Student s) {
+        members.add(s);
+    }
+    
+    public Student getLiaison() {
+        return liaison;
+    }
+    
+    public void setLiaison(Student s) {
+        liaison = s;
     }
     
     @Override

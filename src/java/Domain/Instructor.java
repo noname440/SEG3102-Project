@@ -28,6 +28,9 @@ public class Instructor extends User implements Serializable {
         return coursesTaught;
     }
     
+    public void addCourseSection(CourseSection course) {
+        coursesTaught.add(course);
+    }
 
     @Override
     public int hashCode() {

@@ -26,43 +26,42 @@ public class Student extends User implements Serializable {
     private String studyProgram;
     
     @ManyToMany(
-        targetEntity=CourseSection.class
-    )
+            targetEntity=CourseSection.class
+            )
     @JoinTable(
-        name="ENROLLMENT",
-        joinColumns=@JoinColumn(name="STUDENT_ID"),
-        inverseJoinColumns=@JoinColumn(name="COURSE_ID")
-    )
-    List<CourseSection> enrolledIn;
+            name="ENROLLMENT",
+            joinColumns=@JoinColumn(name="STUDENT_ID"),
+            inverseJoinColumns=@JoinColumn(name="COURSE_ID")
+            )
+            List<CourseSection> enrolledIn;
     
     @ManyToMany(
-        targetEntity=Team.class
-    )
+            targetEntity=Team.class
+            )
     @JoinTable(
-        name="TEAM_APPLICATIONS",
-        joinColumns=@JoinColumn(name="STUDENT_ID"),
-        inverseJoinColumns=@JoinColumn(name="TEAM_ID")
-    )
-    List<Team> teamsAppliedTo;
+            name="TEAM_APPLICATIONS",
+            joinColumns=@JoinColumn(name="STUDENT_ID"),
+            inverseJoinColumns=@JoinColumn(name="TEAM_ID")
+            )
+            List<Team> teamsAppliedTo;
     
     @ManyToMany(
-        targetEntity=Team.class
-    )
+            targetEntity=Team.class
+            )
     @JoinTable(
-        name="TEAM_MEMBERSHIP",
-        joinColumns=@JoinColumn(name="STUDENT_ID"),
-        inverseJoinColumns=@JoinColumn(name="TEAM_ID")
-    )
-    List<Team> teamsMemberOf;
+            name="TEAM_MEMBERSHIP",
+            joinColumns=@JoinColumn(name="STUDENT_ID"),
+            inverseJoinColumns=@JoinColumn(name="TEAM_ID")
+            )
+            List<Team> teamsMemberOf;
     
-    @OneToMany
-    //@JoinColumn(name="student_fk")
-    List<Team> teamsLiaisonOf;
+    @OneToMany(mappedBy="liaison")
+            List<Team> teamsLiaisonOf;
     
     public String getStudyProgram() {
         return studyProgram;
     }
-
+    
     public void setStudyProgram(String prog) {
         this.studyProgram = prog;
     }
@@ -71,18 +70,34 @@ public class Student extends User implements Serializable {
         return enrolledIn;
     }
     
+    public void addCourse(CourseSection course) {
+        enrolledIn.add(course);
+    }
+    
     public List<Team> getTeamsAppliedTo(){
         return teamsAppliedTo;
+    }
+    
+    public void addTeamAppliedTo(Team team) {
+        teamsAppliedTo.add(team);
     }
     
     public List<Team> getTeamsMemberOf(){
         return teamsMemberOf;
     }
     
+    public void addTeamMemberOf(Team team) {
+        teamsMemberOf.add(team);
+    }
+    
     public List<Team> getTeamsLiaisonOf(){
         return teamsLiaisonOf;
     }
-
+    
+    public void addTeamLiaisonOf(Team team) {
+        teamsLiaisonOf.add(team);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
