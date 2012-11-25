@@ -17,13 +17,13 @@
     <% } else {%>
     <% for (CourseSection course : coursesTaught) {%>
     <h2> Course: <% course.getCourseName(); %> </h2>
-    <% List<Team> teams = course.getTeamspartOfCourse();%>
+    <% List<Team> teams = course.getTeams();%>
     <% for (Team team : teams) {%>
     <dl>
         <dt>Team ID: </dt><dd><% team.getId(); %></dd>
         <dt>Team Name: </dt><dd><% team.getTeamName(); %></dd>
         <dt>Date of Creation: </dt><dd><% team.getCreationDate(); %></dd>
-        <dt>Status: </dt><dd><% team.getStatus(); %></dd>     
+        <dt>Status: </dt><dd><% team.getStatusString(); %></dd>     
     </dl>
     <% Student liaison = team.getLiaison();%>
     <h3>Liason Info: </h3>

@@ -4,17 +4,13 @@
  */
 package Servlets;
 
+import Domain.CourseSection;
+import Domain.Instructor;
 import Domain.Student;
+import Domain.User;
+import Util.QueryHelper;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Level;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +26,6 @@ import javax.servlet.http.HttpSession;
 public class Registration extends HttpServlet {
 
     
-      EntityManagerFactory emf = Persistence.createEntityManagerFactory("OPSPU");
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -53,7 +48,7 @@ public class Registration extends HttpServlet {
         String submit = request.getParameter("submit");
             //Check if form not submitted
         if (submit == null) {
-            request.getRequestDispatcher("createaccount.jsp").forward(request, response);
+            request.getRequestDispatcher("Registration.jsp").forward(request, response);
         } 
         // Form is submitted
         else {
@@ -89,92 +84,79 @@ public class Registration extends HttpServlet {
                     errors.add("You must enter a valid email.");
                 }
             }
+            if(type == null) {
+                errors.add("You must enter a Account Type.");
+            }
+            if(type.equals("student")){
             if(courses == null || courses.length() <= 0){
                 errors.add("You must enter a course.");
             }
             if(studyProgram == null || studyProgram.length() <= 0){
                 errors.add("You must enter a study program.");
             }
+            }
             
-            /*
-             * if (type == null || type.length() <= 0) {
-             * errors.add("You must select a type of account.");
-             * } else if (!type.equals("student") && !type.equals("instructor")) {
-             * errors.add("You must select a valid type of account.");
-             * }
-             */
             // Send out errors
             if (errors.size() > 0) {
                 request.setAttribute("errors", errors);
-                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                request.getRequestDispatcher("Registration.jsp").forward(request, response);
                 return;
             }
             
-            //Information in form is valid and verify userID doesn't already exist
-            
-            EntityManager em = emf.createEntityManager();
-            Query query = em.createQuery("SELECT u FROM User u WHERE u.userID = :userID");
-            query.setParameter("userID", userID);
-            query.setMaxResults(1);
-            Collection<Student> queryResults = query.getResultList();
-            em.close();
-            
-            if (queryResults.size() > 0) {
+            //verify userID doesn't already exist
+            User u = QueryHelper.searchUser(userID);
+            if(u != null) {
                 errors.add("There is already a user with the user id that was entered.");
                 request.setAttribute("errors", errors);
-                request.getRequestDispatcher("Register.jsp").forward(request, response);
+                request.getRequestDispatcher("Registration.jsp").forward(request, response);
                 return;
             }
             
+            CourseSection courseSection = QueryHelper.searchCourseSection(courses);
+                    
             // Create a new student account
             if (type.equals("student")) {
-                em = emf.createEntityManager();
                 try {
-                    em.getTransaction().begin();
                     Student student = new Student();
                     student.setEmail(email);
                     student.setFirstName(firstName);
                     student.setLastName(lastName);
                     student.setPassword(password);
                     student.setUserID(Long.parseLong(userID));
-                    em.persist(student);
-                    em.getTransaction().commit();
+                    
+                    student.addCourse(courseSection);
+                    courseSection.addStudent(student);
+                    
+                    QueryHelper.merge(courseSection);
+                    QueryHelper.persist(student);
                 } catch (Exception e) {
                     if (e instanceof NumberFormatException){
                         errors.add("User id must be an integer.");
                     }
-                    em.getTransaction().rollback();
-                } finally {
-                    em.close();
                 }
             }
             //Create new instructor account
             else{
-                em = emf.createEntityManager();
                 try {
-                    em.getTransaction().begin();
-                    Student student = new Student();
-                    student.setEmail(email);
-                    student.setFirstName(firstName);
-                    student.setLastName(lastName);
-                    student.setPassword(password);
-                    student.setUserID(Long.parseLong(userID));
-                    em.persist(student);
-                    em.getTransaction().commit();
+                    Instructor instructor = new Instructor();
+                    instructor.setEmail(email);
+                    instructor.setFirstName(firstName);
+                    instructor.setLastName(lastName);
+                    instructor.setPassword(password);
+                    instructor.setUserID(Long.parseLong(userID));
+                    
+                    QueryHelper.persist(instructor);
                 } catch (Exception e) {
                     if (e instanceof NumberFormatException){
                         errors.add("User id must be an integer.");
                     }
-                    em.getTransaction().rollback();
-                } finally {
-                    em.close();
                 }
             }
             
             // Show success message
             success.add("Account created successfully.");
             request.setAttribute("success", success);
-            request.getRequestDispatcher("Home.jsp").forward(request, response);
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
         }
     }
     

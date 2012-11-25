@@ -5,7 +5,7 @@
     <%@include file="messages.jsp" %>
     <form id="registerForm" >
         <dl>
-        <dt>User ID</dt><dd><input type="text" value="" name="username" /></dd>
+        <dt>User ID</dt><dd><input type="text" value="" name="userID" /></dd>
         <dt>Password</dt><dd><input type="password" value="" name="password" /></dd>
         <dt>Given name</dt><dd><input type="text" value="" name="firstName" /></dd>
         <dt>Last name</dt><dd><input type="text" value="" name="lastName" /></dd>
@@ -45,6 +45,6 @@
         <dt></dt><dd><input type="submit" value="Create Account" name="submit" /></dd>
         </dl>
     </form>
-    <p><a href="/login">Already a member?</a></p>
+    <p><a href="Login">Already a Member?</a></p>
 </div>
 <%@include file="footer.jsp" %>

@@ -6,15 +6,10 @@ package Servlets;
 
 import Domain.CourseSection;
 import Domain.Instructor;
+import Util.QueryHelper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-//import java.util.Date;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,9 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "SetupParameters", urlPatterns = {"/SetupParameters"})
 public class SetupParameters extends HttpServlet {
-
     
-     EntityManagerFactory emf = Persistence.createEntityManagerFactory("OPSPU");
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -64,8 +57,8 @@ public class SetupParameters extends HttpServlet {
             String description = request.getParameter("description");
             String maxStudents = request.getParameter("maxStudents");
             String minStudents = request.getParameter("minStudents");
-            String startDate = request.getParameter("startDate");
-            String endDate = request.getParameter("endDate");
+            Date startDate = (Date)request.getAttribute("startDate");
+            Date endDate = (Date)request.getAttribute("endDate");
             
             
             // Check for nulls and defaults
@@ -92,11 +85,11 @@ public class SetupParameters extends HttpServlet {
                 errors.add("You must enter the minumum amount of students.");
             }
             
-            if(startDate == null || startDate.length() <= 0){
+            if(startDate == null){
                 errors.add("You must enter a start date.");
             }
             
-            if(endDate == null || endDate.length() <= 0){
+            if(endDate == null){
                 errors.add("You must enter a end date.");
             }
             
@@ -107,28 +100,8 @@ public class SetupParameters extends HttpServlet {
                 request.getRequestDispatcher("SetupParameters.jsp").forward(request, response);
             }
             
-            /*
-            //Information in form is valid and verify semester doesn't already exist
-            
-            EntityManager em = emf.createEntityManager();
-            Query query = em.createQuery("SELECT c FROM CourseSection c WHERE c.couseID = :courseID");
-            query.setParameter("courseID", courseID);
-            query.setMaxResults(1);
-            Collection<CourseSection> queryResults = query.getResultList();
-            em.close();
-            
-            if (queryResults.size() > 0) {
-                errors.add("There is already a course section with the same course id that was entered.");
-                request.setAttribute("errors", errors);
-                request.getRequestDispatcher("SetupParameters.jsp").forward(request, response);
-            }
-            */
-            
             // Create a new course section
-            EntityManager em = emf.createEntityManager();
-            em = emf.createEntityManager();
             try {
-                em.getTransaction().begin();
                 CourseSection courseSection = new CourseSection();
                 courseSection.setSemester(semester);
                 courseSection.setSection(section);
@@ -141,18 +114,13 @@ public class SetupParameters extends HttpServlet {
                 
                 instructor.addCourseSection(courseSection);
                 
-                em.merge(instructor);
-                em.persist(courseSection);
-                em.getTransaction().commit();
+                QueryHelper.merge(instructor);
+                QueryHelper.persist(courseSection);
             } catch (Exception e) {
                 if (e instanceof NumberFormatException){
                     errors.add("Max and Min Student fields must be integers.");
                 }
-                em.getTransaction().rollback();
-            } finally {
-                em.close();
-            }
-            
+            }          
         }
         
         // Show success message

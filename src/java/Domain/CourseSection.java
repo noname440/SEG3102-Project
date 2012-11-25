@@ -31,20 +31,24 @@ public class CourseSection implements Serializable {
     private String description;
     private int maxStudents;
     private int minStudents;
-    //@Temporal(javax.persistence.TemporalType.DATE)
-    private String startDate;
-    //@Temporal(javax.persistence.TemporalType.DATE)
-    private String endDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date startDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date endDate;
     
     @OneToMany
             //@JoinColumn(name="student_fk")
-            List<Team> teamsPartOfCourse;
+            List<Team> teams;
     
     @ManyToMany (targetEntity = Student.class)
             List<Student> enrolledStudents;
     
-    public List<Team> getTeamspartOfCourse(){
-        return teamsPartOfCourse;
+    public List<Team> getTeams(){
+        return teams;
+    }
+    
+    public void addTeam(Team team) {
+        teams.add(team);
     }
     
     public void addStudent(Student s) {
@@ -114,19 +118,19 @@ public class CourseSection implements Serializable {
         this.minStudents = minStudents;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
     

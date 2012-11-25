@@ -4,17 +4,12 @@
  */
 package Servlets;
 
+import Domain.Instructor;
 import Domain.Student;
 import Domain.User;
+import Util.QueryHelper;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,8 +24,6 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
-    
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("OPSPU");
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -87,29 +80,19 @@ public class Login extends HttpServlet {
 
             //Form information is valid
             // Check the database for valid login
-            EntityManager em = emf.createEntityManager();
-            Query query = em.createQuery("SELECT s FROM User s WHERE s.userID = :userID AND s.password = :password");
+            User u = QueryHelper.searchUser(userID, password);
             
-            query.setParameter("userID", userID);
-            query.setParameter("password", password);
-            List<User> queryResults = (List<User>)query.getResultList();
-
-            em.close();
-            
-            if(queryResults.size() <= 0) {
+            if(u == null) {
                 errors.add("Invalid username or password. Please try again.");
                 request.setAttribute("errors", errors);
                 request.getRequestDispatcher("Login.jsp").forward(request, response);
-                return;
             } 
-            else if(queryResults.get(0) instanceof Student){
-                request.setAttribute("errors", errors);
-                session.setAttribute("user", queryResults.iterator().next());
+            else if(u instanceof Student){
+                session.setAttribute("user", (Student)u);
                 request.getRequestDispatcher("StudentPage.jsp").forward(request, response);
             }
             else {                      
-                session.setAttribute("user", queryResults.iterator().next());
-                request.setAttribute("errors", errors);
+                session.setAttribute("user", (Instructor)u);
                 request.getRequestDispatcher("InstructorPage.jsp").forward(request, response);
             }
           }

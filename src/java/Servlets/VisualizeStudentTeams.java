@@ -4,21 +4,12 @@
  */
 package Servlets;
 
-import Domain.Instructor;
-import Domain.Student;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *

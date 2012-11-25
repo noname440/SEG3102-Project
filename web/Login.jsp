@@ -20,6 +20,6 @@
             <dd><input type="submit" value="Login" name="submit" /></dd>
         </dl>
     </form>
-    <p><a href="/Register">New member?</a></p>
+    <p><a href="Registration">New Member?</a></p>
 </div>
 <%@include file="footer.jsp" %>

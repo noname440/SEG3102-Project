@@ -7,9 +7,6 @@ package Domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -78,12 +75,34 @@ public class Student extends User implements Serializable {
         return teamsAppliedTo;
     }
     
+    public Team getTeamAppliedTo(CourseSection course){
+        for (Team team : teamsAppliedTo){
+           if(course.getCourseID().equals(team.getCourseSection().getCourseID())) {
+               return team;
+           }            
+        }
+        return null;
+    }
+    
+    
     public void addTeamAppliedTo(Team team) {
         teamsAppliedTo.add(team);
     }
     
+    public void removeTeamAppliedTo(Team team) {
+        teamsAppliedTo.remove(team);
+    }
+    
     public List<Team> getTeamsMemberOf(){
         return teamsMemberOf;
+    }
+    public Team getTeamMemberOf(CourseSection course){
+        for (Team team : teamsMemberOf){
+           if(course.getCourseID().equals(team.getCourseSection().getCourseID())) {
+               return team;
+           }            
+        }
+        return null;
     }
     
     public void addTeamMemberOf(Team team) {
@@ -92,6 +111,15 @@ public class Student extends User implements Serializable {
     
     public List<Team> getTeamsLiaisonOf(){
         return teamsLiaisonOf;
+    }
+    
+    public Team getTeamLiaisonOf(CourseSection course){
+        for (Team team : teamsLiaisonOf){
+           if(course.getCourseID().equals(team.getCourseSection().getCourseID())) {
+               return team;
+           }            
+        }
+        return null;
     }
     
     public void addTeamLiaisonOf(Team team) {

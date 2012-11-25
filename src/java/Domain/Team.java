@@ -29,8 +29,8 @@ public class Team implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date creationDate;
     private boolean status;
-    private int minExempt;
-    private int maxExempt;
+    private boolean minExempt;
+    private boolean maxExempt;
     
     @ManyToOne
             CourseSection courseSection;
@@ -77,27 +77,35 @@ public class Team implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
     public void setStatus(boolean status) {
         this.status = status;
     }
+    
+    public String getStatusString() {
+        if (status){
+            return "Full" ;
+        } else {
+            return "Not Full" ;
+        }
+    }
 
-    public int getMinExempt() {
+    public boolean getMinExempt() {
         return minExempt;
     }
 
-    public void setMinExempt(int minExempt) {
+    public void setMinExempt(boolean minExempt) {
         this.minExempt = minExempt;
     }
 
-    public int getMaxExempt() {
+    public boolean getMaxExempt() {
         return maxExempt;
     }
 
-    public void setMaxExempt(int maxExempt) {
+    public void setMaxExempt(boolean maxExempt) {
         this.maxExempt = maxExempt;
     }
     
@@ -115,6 +123,10 @@ public class Team implements Serializable {
     
     public void addApplicant(Student s) {
         applicants.add(s);
+    }
+    
+    public boolean removeApplicant(Student s) {
+        return applicants.remove(s);
     }
     
     public List<Student> getMembers() {
