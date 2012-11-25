@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="style.css">
 
 <%@page import="java.util.List"%>
 <%@page import="Domain.Instructor"%>
