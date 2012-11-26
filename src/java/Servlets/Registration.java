@@ -52,7 +52,7 @@ public class Registration extends HttpServlet {
         } 
         // Form is submitted
         else {
-            String userID = request.getParameter("userID");
+            Long userID = Long.parseLong(request.getParameter("userID"));
             String password = request.getParameter("password");
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
@@ -62,7 +62,7 @@ public class Registration extends HttpServlet {
             String type = request.getParameter("type"); //student or instructor 
 
             // Check for nulls and defaults
-            if (userID == null || userID.length() <= 0) {
+            if (userID == null) {
                 errors.add("You must enter a username.");
             }
             if (password == null || password.length() <= 6) {
@@ -87,13 +87,13 @@ public class Registration extends HttpServlet {
             if(type == null) {
                 errors.add("You must enter a Account Type.");
             }
-            if(type.equals("student")){
-            if(courses == null || courses.length() <= 0){
-                errors.add("You must enter a course.");
-            }
-            if(studyProgram == null || studyProgram.length() <= 0){
-                errors.add("You must enter a study program.");
-            }
+            else if(type.equals("student")){
+                if(courses == null || courses.length() <= 0){
+                    errors.add("You must enter a course.");
+                }
+                if(studyProgram == null || studyProgram.length() <= 0){
+                    errors.add("You must enter a study program.");
+                }
             }
             
             // Send out errors
@@ -122,7 +122,7 @@ public class Registration extends HttpServlet {
                     student.setFirstName(firstName);
                     student.setLastName(lastName);
                     student.setPassword(password);
-                    student.setUserID(Long.parseLong(userID));
+                    student.setUserID(userID);
                     
                     student.addCourse(courseSection);
                     courseSection.addStudent(student);
@@ -143,7 +143,7 @@ public class Registration extends HttpServlet {
                     instructor.setFirstName(firstName);
                     instructor.setLastName(lastName);
                     instructor.setPassword(password);
-                    instructor.setUserID(Long.parseLong(userID));
+                    instructor.setUserID(userID);
                     
                     QueryHelper.persist(instructor);
                 } catch (Exception e) {

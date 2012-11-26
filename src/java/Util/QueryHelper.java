@@ -7,21 +7,42 @@ package Util;
 import Domain.*;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transaction;
+import javax.transaction.UserTransaction;
 
 /**
  *
  * @author Michael
  */
+@PersistenceContext(name="persistence/dbunit", unitName="Del3PU")
 public class QueryHelper {
     
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("OPSPU");
+    @Resource 
+    private static UserTransaction utx; 
+    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Del3PU");
     private static EntityManager em = emf.createEntityManager();
+    //private static Context envCtx;
+    //private static EntityManager em;
     
-    public static User searchUser(String userID) {
+    public static void init() {
+        try {
+            //envCtx = (Context) new InitialContext().lookup("java:comp/env");
+            //em = (EntityManager) envCtx.lookup("persistence/dbunit");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static User searchUser(Long userID) {
         Query query = em.createQuery("SELECT u FROM User u WHERE u.userID = :userID");
         query.setParameter("userID", userID);
         query.setMaxResults(1);
@@ -46,7 +67,7 @@ public class QueryHelper {
         return ((List<User>)queryResults).get(0);
     }
     
-    public static Student searchStudent(String studentID) {
+    public static Student searchStudent(Long studentID) {
         User u = searchUser(studentID);
         if (u instanceof Student) {
             return (Student)u;
@@ -55,7 +76,7 @@ public class QueryHelper {
             return null;
     }
     
-    public static Instructor searchInstructor(String instructorID) {
+    public static Instructor searchInstructor(Long instructorID) {
         User u = searchUser(instructorID);
         if (u instanceof Instructor) {
             return (Instructor)u;
@@ -89,15 +110,28 @@ public class QueryHelper {
     }
     
     public static void merge(Object o) {
-        em.getTransaction().begin();
-        em.merge(o);
-        em.getTransaction().commit();
+        try{
+            utx.begin();
+            em.merge(o);
+            utx.commit();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }       
     }
     
     public static void persist(Object o) {
+        try{
+            utx.begin();
+            em.persist(o);
+            utx.commit();
+        } catch(Exception e) {
+            e.printStackTrace();
+        } 
+        /*
         em.getTransaction().begin();
         em.persist(o);
         em.getTransaction().commit();
+        */
     }
     
 }

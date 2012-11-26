@@ -29,7 +29,7 @@ public class AcceptNewStudents extends HttpServlet {
         
         List<String> errors = new ArrayList<String>();
         List<String> success = new ArrayList<String>();
-        String studentID = request.getParameter("userID");
+        Long studentID = Long.parseLong(request.getParameter("userID"));
         String teamID = request.getParameter("teamID");
         
         Student student = QueryHelper.searchStudent(studentID);
