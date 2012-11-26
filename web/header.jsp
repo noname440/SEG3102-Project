@@ -17,6 +17,7 @@
                 <div class="topmenu">
                     <a href="index.jsp">Home</a> ·
                     <% if(session.getAttribute("user") == null) { %><a href="Login">Login</a><% } %>
+                    <% if(session.getAttribute("user") == null) { %><a href="Registration">Register</a><% } %>
                     <% if(session.getAttribute("user") != null) { %><a href="Logout">Logout</a><% } %>
                 </div>
                 
