@@ -42,33 +42,33 @@ public class QueryHelper {
         }
     }
     
-    public static User searchUser(Long userID) {
-        Query query = em.createQuery("SELECT u FROM User u WHERE u.userID = :userID");
+    public static TMSUser searchUser(Long userID) {
+        Query query = em.createQuery("SELECT u FROM TMSUser u WHERE u.userID = :userID");
         query.setParameter("userID", userID);
         query.setMaxResults(1);
         
-        Collection<User> queryResults = query.getResultList();
+        Collection<TMSUser> queryResults = query.getResultList();
         if (queryResults.isEmpty()) {
             return null;
         }
-        return ((List<User>)queryResults).get(0);
+        return ((List<TMSUser>)queryResults).get(0);
     }
     
-    public static User searchUser(String userID, String password) {
-        Query query = em.createQuery("SELECT u FROM User u WHERE u.userID = :userID AND u.password = :password");
+    public static TMSUser searchUser(String userID, String password) {
+        Query query = em.createQuery("SELECT u FROM TMSUser u WHERE u.userID = :userID AND u.password = :password");
         query.setParameter("userID", userID);
         query.setParameter("password", password);
         query.setMaxResults(1);
         
-        Collection<User> queryResults = query.getResultList();
+        Collection<TMSUser> queryResults = query.getResultList();
         if (queryResults.isEmpty()) {
             return null;
         }
-        return ((List<User>)queryResults).get(0);
+        return ((List<TMSUser>)queryResults).get(0);
     }
     
     public static Student searchStudent(Long studentID) {
-        User u = searchUser(studentID);
+        TMSUser u = searchUser(studentID);
         if (u instanceof Student) {
             return (Student)u;
         }
@@ -77,7 +77,7 @@ public class QueryHelper {
     }
     
     public static Instructor searchInstructor(Long instructorID) {
-        User u = searchUser(instructorID);
+        TMSUser u = searchUser(instructorID);
         if (u instanceof Instructor) {
             return (Instructor)u;
         }

@@ -6,7 +6,7 @@ package Servlets;
 
 import Domain.Instructor;
 import Domain.Student;
-import Domain.User;
+import Domain.TMSUser;
 import Util.QueryHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class Login extends HttpServlet {
 
             //Form information is valid
             // Check the database for valid login
-            User u = QueryHelper.searchUser(userID, password);
+            TMSUser u = QueryHelper.searchUser(userID, password);
             
             if(u == null) {
                 errors.add("Invalid username or password. Please try again.");

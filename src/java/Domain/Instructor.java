@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
  * @author Michael
  */
 @Entity
-public class Instructor extends User implements Serializable {
+public class Instructor extends TMSUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @OneToMany

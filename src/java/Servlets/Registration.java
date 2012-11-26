@@ -7,7 +7,7 @@ package Servlets;
 import Domain.CourseSection;
 import Domain.Instructor;
 import Domain.Student;
-import Domain.User;
+import Domain.TMSUser;
 import Util.QueryHelper;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -104,7 +104,7 @@ public class Registration extends HttpServlet {
             }
             
             //verify userID doesn't already exist
-            User u = QueryHelper.searchUser(userID);
+            TMSUser u = QueryHelper.searchUser(userID);
             if(u != null) {
                 errors.add("There is already a user with the user id that was entered.");
                 request.setAttribute("errors", errors);

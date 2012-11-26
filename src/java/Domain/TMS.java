@@ -25,7 +25,7 @@ public class TMS implements Serializable {
     private Long id;
 
     @OneToMany
-    private List<User> users;
+    private List<TMSUser> users;
     
     public Long getId() {
         return id;
@@ -35,10 +35,10 @@ public class TMS implements Serializable {
         this.id = id;
     }
     
-    public User getUser(long userID) {
+    public TMSUser getUser(long userID) {
         Iterator it = users.iterator();
         while(it.hasNext()) {
-            User u = (User)it.next();
+            TMSUser u = (TMSUser)it.next();
             if(u.getUserID() == userID)
                 return u;
         }
