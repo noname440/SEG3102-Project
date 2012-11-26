@@ -52,7 +52,14 @@ public class Registration extends HttpServlet {
         } 
         // Form is submitted
         else {
-            Long userID = Long.parseLong(request.getParameter("userID"));
+            Long userID = null;
+            
+            try {
+                userID = Long.parseLong(request.getParameter("userID"));
+            } catch (Exception e){
+                errors.add("You must enter a valid username.");
+            }
+            
             String password = request.getParameter("password");
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
@@ -147,6 +154,7 @@ public class Registration extends HttpServlet {
                     
                     QueryHelper.persist(instructor);
                 } catch (Exception e) {
+                    errors.add("Did not persists.");
                     if (e instanceof NumberFormatException){
                         errors.add("User id must be an integer.");
                     }
@@ -156,7 +164,7 @@ public class Registration extends HttpServlet {
             // Show success message
             success.add("Account created successfully.");
             request.setAttribute("success", success);
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.getRequestDispatcher("Registration.jsp").forward(request, response);
         }
     }
     
