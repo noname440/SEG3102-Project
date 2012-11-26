@@ -4,9 +4,9 @@
     <h2>Instructor Page</h2>
     <%@include file="messages.jsp" %>
     
-    <p><a href="/VisualizeStudentTeams">Visualize Student Teams</a></p>
+    <p><a href="VisualizeStudentTeams">Visualize Student Teams</a></p>
     <br>
-    <p><a href="/SetupParameters">Setup Parameters for a new Course</a></p>
+    <p><a href="SetupParameters">Setup Parameters for a new Course</a></p>
 
    
 </div>
