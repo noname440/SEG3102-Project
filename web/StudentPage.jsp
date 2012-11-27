@@ -14,16 +14,12 @@
     <% if (student != null) {%>
     <% List<CourseSection> courses = student.getCourses();%>
     <% for (CourseSection course : courses) {%>
-    <h2> Course: <% course.getCourseName(); %> </h2>
+    <h2> Course: <%= course.getCourseID()%> -   <%= course.getCourseName()%> </h2>
     <% if (student.getTeamLiaisonOf(course) != null) {%>
-    <p><a href="AcceptNewStudents" onclick="<% session.setAttribute("courseID", course.getCourseID()); %>">Accept New Students</a></p>
+    <p><a href="AcceptNewStudents" onclick="<% session.setAttribute("course", course); %>">Accept New Students</a></p>
     <% } %>
-    <% Team teamApp = student.getTeamAppliedTo(course);%>
-    <% Team teamMemb = student.getTeamMemberOf(course);%>
-    <% if (teamApp == null && teamMemb == null) { %>
-    <p><a href="JoinTeam" onclick="<% session.setAttribute("courseID", course.getCourseID()); %>">Join a Team</a></p>  
-    <% } %>
-    <p><a href="CreateTeam" onclick="<% session.setAttribute("courseID", course.getCourseID()); %>">Create Team</a></p>
+    <p><a href="JoinTeam" onclick="<% session.setAttribute("course", course); %>">Join a Team</a></p>  
+    <p><a href="CreateTeam" onclick="<% session.setAttribute("course", course); %>">Create Team</a></p>
     <% } } %>
      
    

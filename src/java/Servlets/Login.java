@@ -54,7 +54,6 @@ public class Login extends HttpServlet {
         else {
             String userID = request.getParameter("userID");
             String password = request.getParameter("password");
-            String type = request.getParameter("type");
 
             // Check for nulls and defaults
             if(userID == null || userID.length() <= 0) {
@@ -65,11 +64,6 @@ public class Login extends HttpServlet {
                 errors.add("You must enter a password with a minimum of 6 characters.");
             } 
 
-            if(type == null || type.length() <= 0) {
-                errors.add("You must select a type of login.");
-            } else if(!type.equals("student") && !type.equals("instructor")) {
-                errors.add("You must select a valid type of login.");
-            }
 
             // Send out errors
             if(errors.size() > 0) {

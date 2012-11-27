@@ -10,12 +10,14 @@ import Util.QueryHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "SetupParameters", urlPatterns = {"/SetupParameters"})
 public class SetupParameters extends HttpServlet {
+    @Resource 
+    private UserTransaction utx; 
     
     /**
      * Processes requests for both HTTP
@@ -57,8 +61,8 @@ public class SetupParameters extends HttpServlet {
             String description = request.getParameter("description");
             String maxStudents = request.getParameter("maxStudents");
             String minStudents = request.getParameter("minStudents");
-            Date startDate = (Date)request.getAttribute("startDate");
-            Date endDate = (Date)request.getAttribute("endDate");
+            String startDate = request.getParameter("startDate");
+            String endDate = request.getParameter("endDate");
             
             
             // Check for nulls and defaults
@@ -106,6 +110,7 @@ public class SetupParameters extends HttpServlet {
                 courseSection.setSemester(semester);
                 courseSection.setSection(section);
                 courseSection.setCourseName(courseName);
+                //add course code
                 courseSection.setDescription(description);
                 courseSection.setMaxStudents(Integer.parseInt(maxStudents));
                 courseSection.setMinStudents(Integer.parseInt(minStudents));
@@ -114,8 +119,7 @@ public class SetupParameters extends HttpServlet {
                 
                 instructor.addCourseSection(courseSection);
                 
-                QueryHelper.merge(instructor);
-                QueryHelper.persist(courseSection);
+                QueryHelper.persist(courseSection,utx);
             } catch (Exception e) {
                 if (e instanceof NumberFormatException){
                     errors.add("Max and Min Student fields must be integers.");

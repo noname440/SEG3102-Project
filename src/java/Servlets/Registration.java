@@ -11,12 +11,14 @@ import Domain.TMSUser;
 import Util.QueryHelper;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -24,7 +26,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "Registration", urlPatterns = {"/Registration"})
 public class Registration extends HttpServlet {
-
+    @Resource 
+    private UserTransaction utx; 
+    
+    private static Boolean populated = false;
     
     /**
      * Processes requests for both HTTP
@@ -45,6 +50,11 @@ public class Registration extends HttpServlet {
         ArrayList<String> errors = new ArrayList<String>();
         ArrayList<String> success = new ArrayList<String>();
 
+        
+        if (populated == false){
+            QueryHelper.populateDatabase(utx);
+            populated = true;
+        }
         String submit = request.getParameter("submit");
             //Check if form not submitted
         if (submit == null) {
@@ -52,14 +62,8 @@ public class Registration extends HttpServlet {
         } 
         // Form is submitted
         else {
-            Long userID = null;
-            
-            try {
-                userID = Long.parseLong(request.getParameter("userID"));
-            } catch (Exception e){
-                errors.add("You must enter a valid username.");
-            }
-            
+             
+            String userID = request.getParameter("userID");       
             String password = request.getParameter("password");
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
@@ -111,6 +115,7 @@ public class Registration extends HttpServlet {
             }
             
             //verify userID doesn't already exist
+
             TMSUser u = QueryHelper.searchUser(userID);
             if(u != null) {
                 errors.add("There is already a user with the user id that was entered.");
@@ -118,11 +123,14 @@ public class Registration extends HttpServlet {
                 request.getRequestDispatcher("Registration.jsp").forward(request, response);
                 return;
             }
+
             
             CourseSection courseSection = QueryHelper.searchCourseSection(courses);
                     
             // Create a new student account
-            if (type.equals("student")) {
+          
+            
+           if (type.equals("student")) {
                 try {
                     Student student = new Student();
                     student.setEmail(email);
@@ -130,16 +138,21 @@ public class Registration extends HttpServlet {
                     student.setLastName(lastName);
                     student.setPassword(password);
                     student.setUserID(userID);
+                    student.setStudyProgram(studyProgram);
                     
                     student.addCourse(courseSection);
                     courseSection.addStudent(student);
                     
-                    QueryHelper.merge(courseSection);
-                    QueryHelper.persist(student);
+                    QueryHelper.merge(courseSection,utx);
+                    QueryHelper.persist(student,utx);
+                    
+                    
                 } catch (Exception e) {
+                    errors.add("Did not persists.");
                     if (e instanceof NumberFormatException){
                         errors.add("User id must be an integer.");
                     }
+                    e.printStackTrace();
                 }
             }
             //Create new instructor account
@@ -152,7 +165,7 @@ public class Registration extends HttpServlet {
                     instructor.setPassword(password);
                     instructor.setUserID(userID);
                     
-                    QueryHelper.persist(instructor);
+                    QueryHelper.persist(instructor,utx);
                 } catch (Exception e) {
                     errors.add("Did not persists.");
                     if (e instanceof NumberFormatException){

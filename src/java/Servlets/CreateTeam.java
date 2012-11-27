@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -25,6 +27,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "CreateTeam", urlPatterns = {"/CreateTeam"})
 public class CreateTeam extends HttpServlet {
+    @Resource 
+    private UserTransaction utx; 
 
     /**
      * Processes requests for both HTTP
@@ -44,10 +48,16 @@ public class CreateTeam extends HttpServlet {
         List<String> errors = new ArrayList<String>();
         List<String> success = new ArrayList<String>();
         
-        String courseID = (String) session.getAttribute("courseID");
-        CourseSection course = QueryHelper.searchCourseSection(courseID);
+        CourseSection course = (CourseSection) session.getAttribute("course");
         Student student = (Student)session.getAttribute("user");
         
+        String submit = request.getParameter("submit");
+            //Check if form not submitted
+        if (submit == null) {
+            request.getRequestDispatcher("CreateTeam.jsp").forward(request, response);
+        } 
+        // Form is submitted
+        else {
         List<Team> teams = course.getTeams();
         for(Team t : teams) {
             //check if student is already liaison of a team in this course section and return an error
@@ -68,7 +78,7 @@ public class CreateTeam extends HttpServlet {
             //check if student has already applied to a team in this course section and remove the student from its applicant list
             if(t.removeApplicant(student)) {
                 student.removeTeamAppliedTo(t);
-                QueryHelper.merge(t);
+                QueryHelper.merge(t,utx);
             }
             
         }
@@ -92,15 +102,15 @@ public class CreateTeam extends HttpServlet {
         team.setCourseSection(course);
         course.addTeam(team);
         
-        QueryHelper.persist(team);
-        QueryHelper.merge(student);
-        QueryHelper.merge(course);
+        QueryHelper.persist(team,utx);
+        QueryHelper.merge(student,utx);
+        QueryHelper.merge(course,utx);
         
         success.add("Team " + team.getTeamName()+ " added to course " + course.getCourseName());
         request.setAttribute("success", success);
-        request.getRequestDispatcher("AcceptStudents.jsp").forward(request, response);
+        request.getRequestDispatcher("StudentPage.jsp").forward(request, response);
     }
-
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP

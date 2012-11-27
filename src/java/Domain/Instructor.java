@@ -5,6 +5,7 @@
 package Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +22,7 @@ public class Instructor extends TMSUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @OneToMany
-    List<CourseSection> coursesTaught;
+    List<CourseSection> coursesTaught = new ArrayList<CourseSection>();
     
     
     public List<CourseSection> getCoursesTaught(){
@@ -35,7 +36,7 @@ public class Instructor extends TMSUser implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userID != null ? userID.hashCode() : 0);
+        hash += (ID != null ? ID.hashCode() : 0);
         return hash;
     }
 

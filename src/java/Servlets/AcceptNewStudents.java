@@ -10,11 +10,14 @@ import Util.QueryHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -22,15 +25,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AcceptNewStudents", urlPatterns = {"/AcceptNewStudents"})
 public class AcceptNewStudents extends HttpServlet {
+    @Resource 
+    private UserTransaction utx; 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        HttpSession session = request.getSession(true);
+        
         List<String> errors = new ArrayList<String>();
         List<String> success = new ArrayList<String>();
-        Long studentID = Long.parseLong(request.getParameter("userID"));
-        String teamID = request.getParameter("teamID");
+        String studentID = request.getParameter("userID");
+                   
+        long teamID = (Long) session.getAttribute("teamID");
+    
         
         Student student = QueryHelper.searchStudent(studentID);
         //check if student exists     
@@ -72,12 +81,12 @@ public class AcceptNewStudents extends HttpServlet {
         for(Team t : teamsList) {
             if(t.removeApplicant(student)) {
                 student.removeTeamAppliedTo(t);
-                QueryHelper.merge(t);
+                QueryHelper.merge(t,utx);
             }    
         }
         
-        QueryHelper.merge(student);
-        QueryHelper.merge(team);
+        QueryHelper.merge(student,utx);
+        QueryHelper.merge(team,utx);
         
         success.add("Student " + student.getFirstName() + " " + student.getLastName() + " successfully added to team.");
         request.setAttribute("success", success);

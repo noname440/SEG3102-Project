@@ -5,6 +5,7 @@
 package Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ public class Team implements Serializable {
     private String teamName;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date creationDate;
-    private boolean status;
+    private boolean status = false;
     private boolean minExempt;
     private boolean maxExempt;
     
@@ -40,14 +41,14 @@ public class Team implements Serializable {
             targetEntity=Student.class
             
             )
-            List<Student> applicants;
+            List<Student> applicants = new ArrayList<Student>();
     
     @ManyToMany(
             mappedBy = "teamsMemberOf",
             targetEntity=Student.class
             
             )
-            List<Student> members;
+            List<Student> members= new ArrayList<Student>();;
     
     @ManyToOne
             Student liaison;

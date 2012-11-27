@@ -35,7 +35,7 @@ public class TMS implements Serializable {
         this.id = id;
     }
     
-    public TMSUser getUser(long userID) {
+    public TMSUser getUser(String userID) {
         Iterator it = users.iterator();
         while(it.hasNext()) {
             TMSUser u = (TMSUser)it.next();

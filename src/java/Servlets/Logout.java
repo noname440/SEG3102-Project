@@ -39,7 +39,7 @@ public class Logout extends HttpServlet {
         ArrayList<String> success = new ArrayList<String>();
         success.add("User has logged out");
         request.setAttribute("success", success);
-        request.getRequestDispatcher("Home.jsp").forward(request, response);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

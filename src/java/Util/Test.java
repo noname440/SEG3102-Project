@@ -18,7 +18,7 @@ public class Test {
         i.setFirstName("Blah");
         i.setLastName("HONKK");
         QueryHelper.init();
-        QueryHelper.persist(i);
+        //QueryHelper.persist(i);
         System.out.println("done");
     }
     

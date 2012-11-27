@@ -5,6 +5,7 @@
 package Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -30,7 +31,7 @@ public class Student extends TMSUser implements Serializable {
             joinColumns=@JoinColumn(name="STUDENT_ID"),
             inverseJoinColumns=@JoinColumn(name="COURSE_ID")
             )
-            List<CourseSection> enrolledIn;
+            List<CourseSection> enrolledIn= new ArrayList<CourseSection>();
     
     @ManyToMany(
             targetEntity=Team.class
@@ -50,10 +51,10 @@ public class Student extends TMSUser implements Serializable {
             joinColumns=@JoinColumn(name="STUDENT_ID"),
             inverseJoinColumns=@JoinColumn(name="TEAM_ID")
             )
-            List<Team> teamsMemberOf;
+            List<Team> teamsMemberOf = new ArrayList<Team>();;
     
     @OneToMany(mappedBy="liaison")
-            List<Team> teamsLiaisonOf;
+            List<Team> teamsLiaisonOf = new ArrayList<Team>();;
     
     public String getStudyProgram() {
         return studyProgram;
@@ -129,7 +130,7 @@ public class Student extends TMSUser implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userID != null ? userID.hashCode() : 0);
+        hash += (ID != null ? ID.hashCode() : 0);
         return hash;
     }
 

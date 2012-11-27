@@ -11,7 +11,7 @@
             <div id="top"></div>
             <div id="content">
                 <div class="header">
-                    <h1><a href="Home.jsp">TMS: Team Management System</a></h1>
+                    <h1><a href="index.jsp">TMS: Team Management System</a></h1>
                     <h2>by the AntiPatterns</h2>
                 </div>
                 <div class="topmenu">

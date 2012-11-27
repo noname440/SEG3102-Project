@@ -9,13 +9,6 @@
             <dd><input type="text" value="" name="userID" /></dd>
             <dt>Password</dt>
             <dd><input type="password" value="" name="password" /></dd>
-            <dt>Login Type</dt>
-            <dd>
-            <INPUT TYPE="radio" NAME="type" VALUE="student" >
-             Student
-            <INPUT TYPE="radio" NAME="type" VALUE="instructor">
-             Instructor
-            </dd>
             <dt></dt>
             <dd><input type="submit" value="Login" name="submit" /></dd>
         </dl>

@@ -10,12 +10,14 @@ import Util.QueryHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
 /**
  *
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "JoinTeam", urlPatterns = {"/JoinTeam"})
 public class JoinTeam extends HttpServlet {
+    @Resource 
+    private UserTransaction utx; 
 
     /**
      * Processes requests for both HTTP
@@ -42,10 +46,18 @@ public class JoinTeam extends HttpServlet {
         List<String> errors = new ArrayList<String>();
         List<String> success = new ArrayList<String>();
         
-        String teamID = request.getParameter("teamID");
+        Long teamID = (Long) session.getAttribute("teamID");
         Team team = QueryHelper.searchTeam(teamID);
         Student student = (Student)session.getAttribute("user");
         
+        
+         String submit = request.getParameter("submit");
+            //Check if form not submitted
+        if (submit == null) {
+            request.getRequestDispatcher("JoinTeam.jsp").forward(request, response);
+        } 
+        // Form is submitted
+        else {
         //check if this student is a member or liaison of another team
         List<Team> teamsList = team.getCourseSection().getTeams();
         for(Team t : teamsList) {
@@ -67,14 +79,14 @@ public class JoinTeam extends HttpServlet {
         student.addTeamAppliedTo(team);
         team.addApplicant(student);
         
-        QueryHelper.merge(student);
-        QueryHelper.merge(team);
+        QueryHelper.merge(student,utx);
+        QueryHelper.merge(team,utx);
         
         success.add("Successfully applied to team " + team.getTeamName());
         request.setAttribute("success", success);
         request.getRequestDispatcher("JoinTeam.jsp").forward(request, response);        
     }
-
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP

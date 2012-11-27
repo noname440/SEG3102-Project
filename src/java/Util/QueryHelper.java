@@ -26,23 +26,23 @@ import javax.transaction.UserTransaction;
 @PersistenceContext(name="persistence/dbunit", unitName="Del3PU")
 public class QueryHelper {
     
-    @Resource 
-    private static UserTransaction utx; 
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Del3PU");
-    private static EntityManager em = emf.createEntityManager();
-    //private static Context envCtx;
-    //private static EntityManager em;
+    
+    //private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Del3PU");
+    //private static EntityManager em = emf.createEntityManager();
+    private static Context envCtx;
+    private static EntityManager em;
     
     public static void init() {
         try {
-            //envCtx = (Context) new InitialContext().lookup("java:comp/env");
-            //em = (EntityManager) envCtx.lookup("persistence/dbunit");
+            envCtx = (Context) new InitialContext().lookup("java:comp/env");
+            em = (EntityManager) envCtx.lookup("persistence/dbunit");
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static TMSUser searchUser(Long userID) {
+    public static TMSUser searchUser(String userID) {
+        init();
         Query query = em.createQuery("SELECT u FROM TMSUser u WHERE u.userID = :userID");
         query.setParameter("userID", userID);
         query.setMaxResults(1);
@@ -55,6 +55,7 @@ public class QueryHelper {
     }
     
     public static TMSUser searchUser(String userID, String password) {
+        init();
         Query query = em.createQuery("SELECT u FROM TMSUser u WHERE u.userID = :userID AND u.password = :password");
         query.setParameter("userID", userID);
         query.setParameter("password", password);
@@ -67,7 +68,7 @@ public class QueryHelper {
         return ((List<TMSUser>)queryResults).get(0);
     }
     
-    public static Student searchStudent(Long studentID) {
+    public static Student searchStudent(String studentID) {
         TMSUser u = searchUser(studentID);
         if (u instanceof Student) {
             return (Student)u;
@@ -76,7 +77,7 @@ public class QueryHelper {
             return null;
     }
     
-    public static Instructor searchInstructor(Long instructorID) {
+    public static Instructor searchInstructor(String instructorID) {
         TMSUser u = searchUser(instructorID);
         if (u instanceof Instructor) {
             return (Instructor)u;
@@ -85,7 +86,8 @@ public class QueryHelper {
             return null;
     }
     
-    public static Team searchTeam(String teamID) {
+    public static Team searchTeam(Long teamID) {
+        init();
         Query query = em.createQuery("SELECT t FROM Team t WHERE t.id = :teamID");
         query.setParameter("teamID", teamID);
         query.setMaxResults(1);
@@ -98,6 +100,7 @@ public class QueryHelper {
     }
     
     public static CourseSection searchCourseSection(String courseID) {
+        init();
         Query query = em.createQuery("SELECT c FROM CourseSection c WHERE c.courseID = :courseID");
         query.setParameter("courseID", courseID);
         query.setMaxResults(1);
@@ -108,25 +111,40 @@ public class QueryHelper {
         }
         return ((List<CourseSection>)queryResults).get(0);
     }
+
     
-    public static void merge(Object o) {
+    
+    
+    public static void merge(Object o,UserTransaction utx) {
         try{
+            init();
             utx.begin();
             em.merge(o);
             utx.commit();
         } catch(Exception e) {
+            try {         
+                    utx.rollback();
+            } catch (Exception f){}
             e.printStackTrace();
         }       
     }
     
-    public static void persist(Object o) {
+    
+    public static void persist(Object o,UserTransaction utx) {
+       
         try{
+            init();
             utx.begin();
             em.persist(o);
             utx.commit();
         } catch(Exception e) {
+            try {         
+                    utx.rollback();
+            } catch (Exception f){}
             e.printStackTrace();
         } 
+        
+    
         /*
         em.getTransaction().begin();
         em.persist(o);
@@ -134,4 +152,18 @@ public class QueryHelper {
         */
     }
     
+    public static void populateDatabase(UserTransaction utx){
+            CourseSection course = new CourseSection();
+            course.setCourseID("SEG3102");
+            course.setCourseName("design");
+            course.setDescription("fun");
+            course.setMinStudents(1);
+            course.setMaxStudents(5);
+            course.setSection("A");
+            course.setStartDate("2012-11-11");
+            course.setEndDate("2012-12-12");
+            
+            persist(course,utx);
+            
+        }
 }

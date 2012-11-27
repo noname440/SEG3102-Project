@@ -5,6 +5,7 @@
 package Domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -24,24 +25,25 @@ public class CourseSection implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long courseID;
+    private long ID;
+    private String courseID;
     private String semester;
     private String section;
     private String courseName;
     private String description;
     private int maxStudents;
     private int minStudents;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date startDate;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date endDate;
+    //@Temporal(javax.persistence.TemporalType.DATE)
+    private String startDate;
+   // @Temporal(javax.persistence.TemporalType.DATE)
+    private String endDate;
     
     @OneToMany
             //@JoinColumn(name="student_fk")
-            List<Team> teams;
+            List<Team> teams = new ArrayList<Team>();
     
     @ManyToMany (targetEntity = Student.class)
-            List<Student> enrolledStudents;
+            List<Student> enrolledStudents= new ArrayList<Student>();
     
     public List<Team> getTeams(){
         return teams;
@@ -55,11 +57,11 @@ public class CourseSection implements Serializable {
         enrolledStudents.add(s);
     }
     
-    public Long getCourseID() {
+    public String getCourseID() {
         return courseID;
     }
     
-    public void setCourseID(Long id) {
+    public void setCourseID(String id) {
         this.courseID = id;
     }
 
@@ -118,19 +120,19 @@ public class CourseSection implements Serializable {
         this.minStudents = minStudents;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     

@@ -22,17 +22,25 @@ public abstract class TMSUser implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long userID;
+    protected Long ID;
+    protected String userID;
     protected String password;
     protected String firstName;
     protected String lastName;
     protected String email;
+    
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
 
-    public Long getUserID() {
+    public Long getID() {
+        return ID;
+    }
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(Long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
     
@@ -71,7 +79,7 @@ public abstract class TMSUser implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (userID != null ? userID.hashCode() : 0);
+        hash += (ID != null ? ID.hashCode() : 0);
         return hash;
     }
 

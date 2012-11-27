@@ -25,7 +25,7 @@
             </select></dd>
             
             <dt>Courses</dt><dd><select multiple="multiple" name="courses">
-            <option value="seg3102">SEG 3102</option>
+            <option value="SEG3102">SEG 3102</option>
             <option value="seg4910">SEG 4910 </option>
             <option value="csi3105">CSI 3105 </option>
             </select></dd>
