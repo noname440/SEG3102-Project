@@ -7,16 +7,11 @@ package Util;
 import Domain.*;
 import java.util.Collection;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.transaction.Transaction;
 import javax.transaction.UserTransaction;
 
 /**
@@ -26,9 +21,7 @@ import javax.transaction.UserTransaction;
 @PersistenceContext(name="persistence/dbunit", unitName="Del3PU")
 public class QueryHelper {
     
-    
-    //private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("Del3PU");
-    //private static EntityManager em = emf.createEntityManager();
+
     private static Context envCtx;
     private static EntityManager em;
     
@@ -154,7 +147,7 @@ public class QueryHelper {
     
     public static void populateDatabase(UserTransaction utx){
             CourseSection course = new CourseSection();
-            course.setCourseID("SEG3102");
+            course.setCourseCode("SEG3102");
             course.setCourseName("design");
             course.setDescription("fun");
             course.setMinStudents(1);

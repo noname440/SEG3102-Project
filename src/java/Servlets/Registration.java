@@ -177,7 +177,7 @@ public class Registration extends HttpServlet {
             // Show success message
             success.add("Account created successfully.");
             request.setAttribute("success", success);
-            request.getRequestDispatcher("Registration.jsp").forward(request, response);
+            request.getRequestDispatcher("Login").forward(request, response);
         }
     }
     

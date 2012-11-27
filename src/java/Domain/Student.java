@@ -78,7 +78,7 @@ public class Student extends TMSUser implements Serializable {
     
     public Team getTeamAppliedTo(CourseSection course){
         for (Team team : teamsAppliedTo){
-           if(course.getCourseID().equals(team.getCourseSection().getCourseID())) {
+           if(course.getCourseCode().equals(team.getCourseSection().getCourseCode())) {
                return team;
            }            
         }
@@ -99,7 +99,7 @@ public class Student extends TMSUser implements Serializable {
     }
     public Team getTeamMemberOf(CourseSection course){
         for (Team team : teamsMemberOf){
-           if(course.getCourseID().equals(team.getCourseSection().getCourseID())) {
+           if(course.getCourseCode().equals(team.getCourseSection().getCourseCode())) {
                return team;
            }            
         }
@@ -116,7 +116,7 @@ public class Student extends TMSUser implements Serializable {
     
     public Team getTeamLiaisonOf(CourseSection course){
         for (Team team : teamsLiaisonOf){
-           if(course.getCourseID().equals(team.getCourseSection().getCourseID())) {
+           if(course.getCourseCode().equals(team.getCourseSection().getCourseCode())) {
                return team;
            }            
         }

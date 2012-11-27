@@ -26,7 +26,7 @@ public class CourseSection implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long ID;
-    private String courseID;
+    private String courseCode;
     private String semester;
     private String section;
     private String courseName;
@@ -57,18 +57,18 @@ public class CourseSection implements Serializable {
         enrolledStudents.add(s);
     }
     
-    public String getCourseID() {
-        return courseID;
+    public String getCourseCode() {
+        return courseCode;
     }
     
-    public void setCourseID(String id) {
-        this.courseID = id;
+    public void setCourseCode(String id) {
+        this.courseCode = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (courseID != null ? courseID.hashCode() : 0);
+        hash += (courseCode != null ? courseCode.hashCode() : 0);
         return hash;
     }
 
@@ -144,7 +144,7 @@ public class CourseSection implements Serializable {
             return false;
         }
         CourseSection other = (CourseSection) object;
-        if ((this.courseID == null && other.courseID != null) || (this.courseID != null && !this.courseID.equals(other.courseID))) {
+        if ((this.courseCode == null && other.courseCode != null) || (this.courseCode != null && !this.courseCode.equals(other.courseCode))) {
             return false;
         }
         return true;
@@ -152,7 +152,7 @@ public class CourseSection implements Serializable {
 
     @Override
     public String toString() {
-        return "Domain.CourseSection[ id=" + courseID + " ]";
+        return "Domain.CourseSection[ id=" + courseCode + " ]";
     }
 
     

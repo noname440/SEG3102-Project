@@ -1,3 +1,7 @@
+<%@page import="Domain.TMSUser" %>
+<%@page import="Domain.Student" %>
+<%@page import="Domain.Instructor" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">  
     <head>
@@ -16,9 +20,12 @@
                 </div>
                 <div class="topmenu">
                     <a href="index.jsp">Home</a> ·
-                    <% if(session.getAttribute("user") == null) { %><a href="Login">Login ·</a><% } %>
-                    <% if(session.getAttribute("user") == null) { %><a href="Registration">Register</a><% } %>
-                    <% if(session.getAttribute("user") != null) { %><a href="Logout">Logout</a><% } %>
+                    <% TMSUser user = (TMSUser) session.getAttribute("user"); %>
+                    <% if(user == null) { %><a href="Login">Login ·</a><% } %>
+                    <% if(user == null) { %><a href="Registration">Register</a><% } %>
+                    <% if(user != null && user instanceof Student) { %><a href="StudentPage.jsp">Student Page ·</a><% } %>
+                    <% if(user != null && user instanceof Instructor) { %><a href="InstructorPage.jsp">Instructor Page ·</a><% } %>
+                    <% if(user != null) { %><a href="Logout">Logout</a><% } %>
                 </div>
                 
                 

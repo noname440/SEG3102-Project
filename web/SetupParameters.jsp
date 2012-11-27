@@ -5,10 +5,12 @@
     <%@include file="messages.jsp" %>
     <form>
         <dl>
-            <dt>Semester</dt>
-            <dd><input type="text" value="" name="semester" /></dd> 
+            <dt>Course Code</dt>
+            <dd><input type="text" value="" name="courseCode" /></dd>       
             <dt>Course Name</dt>
             <dd><input type="text" value="" name="courseName" /></dd>
+            <dt>Semester</dt>
+            <dd><input type="text" value="" name="semester" /></dd> 
             <dt>Section</dt>
             <dd><input type="text" value="" name="section" /></dd>
             <dt>Description</dt>
@@ -18,9 +20,9 @@
             <dt>Min Students</dt>
             <dd><input type="text" value="" name="minStudents" /></dd>
             <dt>Start Date</dt>
-            <dd><input type="Date" value="" name="startDate" /></dd>
+            <dd><input type="Date" name="startDate" /></dd>
             <dt>End Date</dt>
-            <dd><input type="Date" value="" name="endDate" /></dd>            
+            <dd><input type="Date" name="endDate" /></dd>            
             <dt></dt>
             <dd><input type="submit" value="Submit" name="submit" /></dd>
         </dl>

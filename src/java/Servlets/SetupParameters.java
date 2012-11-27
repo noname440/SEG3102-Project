@@ -55,6 +55,7 @@ public class SetupParameters extends HttpServlet {
         }
         // Form is submitted
         else {
+            String courseCode = request.getParameter("courseCode");
             String semester = request.getParameter("semester");
             String section = request.getParameter("section");
             String courseName = request.getParameter("courseName");
